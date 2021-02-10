@@ -88,26 +88,112 @@
 			</div>
 		</section>
 
-		<!-- <section class="wrapper style1">
+		<section class="wrapper style1">
 			<div class="inner">
-				<h2>
-					Worklow
+				<h2 class="align-center">
+					Overview
 				</h2>
-				<div style="width:50%; float:left;">
-<h3>High-Level <span style="font-family: 'Roboto', sans-serif;"><span style="font-weight: 300;">R</span><span style="font-weight: 400;">I</span><span style="font-weight: 500;">S</span><span style="font-weight: 700;">E</span></span> Program</h3>
-<pre><code class="language-scala">
-asd
+
+        <div  style="width: 70%; margin: auto;">
+        <p>
+          Starting from a <strong>High-Level <span style="font-family: 'Roboto', sans-serif;"><span style="font-weight: 300;">R</span><span style="font-weight: 400;">I</span><span style="font-weight: 500;">S</span><span style="font-weight: 700;">E</span></span> Program</strong> and an <a href="https://elevate-lang.org/"><span style="font-family: 'Fira Sans', sans-serif; font-weight: 300; font-variant: small-caps;">Elevate</span></a> Optimization Strategy the <span style="font-family: 'Roboto Mono', monospace;">Shine</span> compiler <strong>rewrites</strong> the high-level program as specified by the optimization strategy into a <strong>Low-Level <span style="font-family: 'Roboto', sans-serif;"><span style="font-weight: 300;">R</span><span style="font-weight: 400;">I</span><span style="font-weight: 500;">S</span><span style="font-weight: 700;">E</span></span> Program</strong> that encodes all implementation and optimization decissions explicitly.
+        </p>
+        <p>
+          The <strong>code generator</strong> processes the low-level program to generate the final <strong>Optimized C, OpenMP, OpenCL, or CUDA Program</strong>.
+          </p>
+      </div>
+      <hr>
+
+<div class="align-center" style="width:50%; float:left;">
+  <h3>High-Level <span style="font-family: 'Roboto', sans-serif;"><span style="font-weight: 300;">R</span><span style="font-weight: 400;">I</span><span style="font-weight: 500;">S</span><span style="font-weight: 700;">E</span></span> Program</h3>
+    <pre><code class="language-scala align-left">def highLevelProgram: ToBeTyped[Rise] =
+  depFun((n: Nat, m: Nat, o: Nat) =>
+    fun(n`.`o`.`f32)(A => fun(m`.`o`.`f32)(B =>
+      A |> map(fun(rowOfA =>
+        B |> map(fun(rowOfB =>
+          zip(rowOfA)(rowOfB) |>
+            map(fun(x => fst(x) * snd(x))) |>
+              reduce(add)(l(0.0f)) )) )) )) )
 </code></pre>
 </div>
-<div>
-	<h3>ELEVATE Optimization Strategy</h3>
-<pre><code class="language-scala">
-asd
+
+<div class="align-center">
+  <h3><a href="https://elevate-lang.org/"><span style="font-family: 'Fira Sans', sans-serif; font-weight: 300; font-variant: small-caps;">Elevate</span></a> Optimization Strategy</h3>
+    <pre><code class="language-scala align-left">def optimizationStrategy: Strategy[Rise] =
+  (`map |-> mapPar`       `@` outermost(isMap))  `;`
+  (`map |-> mapSeq`       `@` outermost(isMap))  `;`
+  (`reduce |-> reduceSeq` `@` everywhere)
 </code></pre>
 </div>
+
 <div style="clear: both;"></div>
-			</div>
-		</section> -->
+
+<div class="align-center" style="width:50%; float:left;">
+  <i class="fas fa-4x fa-arrow-down fa-rotate-315"></i>
+</div>
+<div class="align-center">
+  <i class="fas fa-4x fa-arrow-down fa-rotate-45"></i>
+</div>
+
+<div style="clear: both;"></div>
+
+<div style="width: 50%; margin: auto; border: 2px solid black; border-radius: 5px;">
+  <div style="margin-left: 5px;">
+    <h3><span style="font-family: 'Roboto Mono', monospace;">Shine</span> Compiler</h3>
+  </div>
+  <div class="align-center" style="margin-top: -1em;">
+    <i class="fas fa-4x fa-sync"></i><br>
+    <span style="font-weight: bold; position: relative; left:5em; top:-3em;">rewriting</span>
+  </div>
+  <div class="align-center" style="margin-top: -1em;">
+    <i class="fas fa-2x fa-arrow-down"></i>
+  </div>
+  <div class="align-center">
+    <h3>Low-Level <span style="font-family: 'Roboto', sans-serif;"><span style="font-weight: 300;">R</span><span style="font-weight: 400;">I</span><span style="font-weight: 500;">S</span><span style="font-weight: 700;">E</span></span> Program</h3>
+      <pre><code class="language-scala align-left">def lowLevelProgram: ToBeTyped[Rise] =
+  depFun((n: Nat, m: Nat, o: Nat) =>
+    fun(n`.`o`.`f32)(A => fun(m`.`o`.`f32)(B =>
+      A |> mapPar(fun(rowOfA =>
+        B |> mapSeq(fun(rowOfB =>
+          zip(rowOfA)(rowOfB) |>
+            map(fun(x => fst(x) * snd(x))) |>
+              reduceSeq(add)(l(0.0f)) )) )) )) )
+</code></pre>
+  </div>
+  <div class="align-center" style="margin-top: -1.5em; margin-bottom: 0.5em;">
+    <i class="fas fa-2x fa-arrow-down"></i>
+  </div>
+  <div class="align-center">
+    <i class="fas fa-4x fa-cog"></i><br>
+    <span style="font-weight: bold; position: relative; left:6em; top:-3em;">code generation</span>
+  </div>
+</div>
+
+<div class="align-center">
+  <i class="fas fa-4x fa-arrow-down"></i>
+</div>
+
+<div style="clear: both;"></div>
+
+<div style="width: 70%; margin: auto;" class="align-center">
+  <h3>Optimized <span style="font-family: 'JetBrains Mono', monospace; font-size: 85%;">&nbsp;C / OpenMP / OpenCL / CUDA&nbsp;</span> Program</h3>
+    <pre><code class="language-c align-left">#include &lt;stdint.h&gt;
+void foo(float* output, int n, int m, int o, float* A, float* B){
+  #pragma omp parallel for
+  for (int i = 0; i &lt; n; i = 1 + i) {
+    for (int j = 0; j &lt; m; j = 1 + j) {
+        float acc;
+        acc = 0.0f;
+        for (int k = 0; k &lt; o; k = 1 + k) {
+          acc = acc + A[k + i * o] * B[k + j * o]; }
+        output[j + i * m] = acc; } }
+}
+</code></pre>
+</div>
+<hr>
+</div>
+
+		</section>
 
 		<!-- RISE in MLIR -->
 		<section class="spotlight style1 orient-right content-align-right image-position-center onload-image-fade-in  ">
