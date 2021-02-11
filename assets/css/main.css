@@ -280,7 +280,7 @@ input, select, textarea {
 		-webkit-overflow-scrolling: touch;
 		font-family: 'JetBrains Mono', monospace;
 		font-size: 0.9em;
-		margin: 0 0 2rem 0;
+		margin: 0;
 	}
 
 		pre code {
